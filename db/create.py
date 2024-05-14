@@ -1,27 +1,28 @@
+import pathlib
 import sqlite3
 
-db_name = "reminders.db"
-
-conn = sqlite3.connect(db_name)
-cursor = conn.cursor()
-
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS reminder (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    chat_id INTEGER,
-    username TEXT,
-    first_name TEXT,
-    last_name TEXT,
-    language TEXT,
-    wr_time TEXT,
-    remind_time TEXT,
-    msg TEXT,
-    reminder_msg TEXT,
-    active INTEGER(1)
-)
-''')
+dir_path = pathlib.Path.cwd()
+path = pathlib.Path(dir_path, 'db', 'reminders.db')
 
 
-conn.commit()
-conn.close()
+def create_db() -> None:
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS reminder (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        chat_id INTEGER,
+        username TEXT,
+        first_name TEXT,
+        last_name TEXT,
+        language TEXT,
+        wr_time TEXT,
+        remind_time TEXT,
+        msg TEXT,
+        reminder_msg TEXT,
+        time_zone INTEGER
+    )
+    ''')
 
+    conn.commit()
+    conn.close()
