@@ -7,20 +7,24 @@ from pytz.exceptions import UnknownTimeZoneError
 async def extract_datetime_and_text(message: str) -> tuple:
     lines = message.splitlines()
 
-    if len(lines) > 1:
+    if len(lines) > 2:
         time = lines[0].strip()
-        reminder_text = lines[1].strip()
+        time_show = lines[1].strip()
+        reminder_text = lines[2].strip()
     else:
         time = "E"
+        time_show = "E"
         reminder_text = "E"
 
-    return time, reminder_text
+    return time, time_show, reminder_text
 
 
 async def str_to_datetime(time_remainder: str) -> datetime:
     date_format = "%Y-%m-%d %H:%M:%S"
-    datetime_obj = datetime.strptime(time_remainder, date_format)
-
+    try:
+        datetime_obj = datetime.strptime(time_remainder, date_format)
+    except ValueError:
+        return datetime.now()
     return datetime_obj
 
 
