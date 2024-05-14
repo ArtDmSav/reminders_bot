@@ -36,7 +36,7 @@ async def process_message(msg: str, time_now: str, chat_id: int, username: str,
             После вычета времени возможно получить значения меньше 'datetime' или даже время прошлого дня, 
             это считать корректным поведение и выводить данное время согласно примеру ответа.
             
-            Шаблон ответа:
+            Строго следовать шаблону ответа:
             2024-05-14 15:30:00
             18:00 14 Май 2024
             покормить кота
@@ -53,8 +53,8 @@ async def process_message(msg: str, time_now: str, chat_id: int, username: str,
     )
 
     time_str_remainder, time_show, reminder_msg = await extract_datetime_and_text(response.choices[0].message.content)
-    print(f'{time_str_remainder} time remain\n{time_show} time show\n{reminder_msg}')
     time_remainder = await str_to_datetime(time_str_remainder)
+                            
     if time_str_remainder == "E":
         return "Произошла ошибка считывания данных, попробуйте снова!"
     else:
